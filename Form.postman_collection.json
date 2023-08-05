@@ -1,0 +1,119 @@
+{
+  "info": {
+    "_postman_id": "8c92c885-2668-45cc-bcda-93c6d7032a7c",
+    "name": "Form",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "16047115"
+  },
+  "item": [
+    {
+      "name": "Create Form",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"data\": {\n        \"website_url\": \"test.com\",\n        \"description\": \"test\",\n        \"damage_value\": 234566,\n        \"callback_agreement\": true,\n        \"locale\": \"th-TH\",\n        \"evidences\": [\n            {\n                \"id\": 15,\n                \"name\": \"Home.jpg\",\n                \"alternativeText\": null,\n                \"caption\": null,\n                \"width\": 3840,\n                \"height\": 5042,\n                \"formats\": {\n                    \"large\": {\n                        \"ext\": \".jpg\",\n                        \"url\": \"/uploads/large_Home_928f160e09.jpg\",\n                        \"hash\": \"large_Home_928f160e09\",\n                        \"mime\": \"image/jpeg\",\n                        \"name\": \"large_Home.jpg\",\n                        \"path\": null,\n                        \"size\": 102.63,\n                        \"width\": 762,\n                        \"height\": 1000\n                    },\n                    \"small\": {\n                        \"ext\": \".jpg\",\n                        \"url\": \"/uploads/small_Home_928f160e09.jpg\",\n                        \"hash\": \"small_Home_928f160e09\",\n                        \"mime\": \"image/jpeg\",\n                        \"name\": \"small_Home.jpg\",\n                        \"path\": null,\n                        \"size\": 33.91,\n                        \"width\": 381,\n                        \"height\": 500\n                    },\n                    \"medium\": {\n                        \"ext\": \".jpg\",\n                        \"url\": \"/uploads/medium_Home_928f160e09.jpg\",\n                        \"hash\": \"medium_Home_928f160e09\",\n                        \"mime\": \"image/jpeg\",\n                        \"name\": \"medium_Home.jpg\",\n                        \"path\": null,\n                        \"size\": 68.31,\n                        \"width\": 571,\n                        \"height\": 750\n                    },\n                    \"thumbnail\": {\n                        \"ext\": \".jpg\",\n                        \"url\": \"/uploads/thumbnail_Home_928f160e09.jpg\",\n                        \"hash\": \"thumbnail_Home_928f160e09\",\n                        \"mime\": \"image/jpeg\",\n                        \"name\": \"thumbnail_Home.jpg\",\n                        \"path\": null,\n                        \"size\": 5.39,\n                        \"width\": 119,\n                        \"height\": 156\n                    }\n                },\n                \"hash\": \"Home_928f160e09\",\n                \"ext\": \".jpg\",\n                \"mime\": \"image/jpeg\",\n                \"size\": 1024.27,\n                \"url\": \"/uploads/Home_928f160e09.jpg\",\n                \"previewUrl\": null,\n                \"provider\": \"local\",\n                \"provider_metadata\": null,\n                \"createdAt\": \"2023-07-29T08:36:59.778Z\",\n                \"updatedAt\": \"2023-07-29T08:36:59.778Z\"\n            }\n        ],\n        \"type\": {\n            \"disconnect\": [],\n            \"connect\": [\n                {\n                    \"id\": 2,\n                    \"position\": {\n                        \"end\": true\n                    }\n                }\n            ]\n        },\n        \"gambling_type\": {\n            \"disconnect\": [],\n            \"connect\": [\n                {\n                    \"id\": 3,\n                    \"position\": {\n                        \"end\": true\n                    }\n                }\n            ]\n        },\n        \"inviter\": {\n            \"disconnect\": [],\n            \"connect\": [\n                {\n                    \"id\": 4,\n                    \"position\": {\n                        \"end\": true\n                    }\n                }\n            ]\n        },\n        \"tunnel\": {\n            \"disconnect\": [],\n            \"connect\": [\n                {\n                    \"id\": 1,\n                    \"position\": {\n                        \"end\": true\n                    }\n                }\n            ]\n        }\n    }\n}"
+        },
+        "url": {
+          "raw": "{{host}}/api/forms",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "forms"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Upload File",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "files",
+              "type": "file",
+              "src": "/Users/worapolburaphan/Downloads/Home.jpg"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{host}}/api/upload",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "upload"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Inviter options",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/inviter-options",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "inviter-options"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Invite tunnel options",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/invite-tunnel-options",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "invite-tunnel-options"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gambling Type Options",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/gambling-type-options",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "gambling-type-options"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

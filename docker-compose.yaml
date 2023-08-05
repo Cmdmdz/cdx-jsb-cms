@@ -1,0 +1,56 @@
+version: '3.8'  # Use the latest Compose file version
+
+services:
+  strapi:
+    container_name: strapi-cms-api
+    build:
+      dockerfile: Dockerfile.develop
+      context: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      NODE_ENV: development
+    working_dir: /strapi/app
+    volumes:
+      - .:/strapi/app
+    ports:
+      - "1337:1337"
+      - "8000:8000"
+    networks:
+      - strapi
+    depends_on:
+      - strapi-db
+
+## try to use this service instead
+  strapi-db:
+    image: mysql:8.0
+    container_name: strapi-db
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dql7wohrmkE7XMxpk4o2hESF
+      MYSQL_DATABASE: just_stop_gambling
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - strapi
+
+volumes:
+  mysql_data:
+
+networks:
+  strapi:
+    name: Strapi
+    driver: bridge

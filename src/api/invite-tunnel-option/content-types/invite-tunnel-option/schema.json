@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invite_tunnel_options",
+  "info": {
+    "singularName": "invite-tunnel-option",
+    "pluralName": "invite-tunnel-options",
+    "displayName": "ตัวเลือกช่องทางการชักชวน"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    }
+  }
+}

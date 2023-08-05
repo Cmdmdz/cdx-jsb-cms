@@ -1,0 +1,149 @@
+{
+  "info": {
+    "_postman_id": "cd0476f5-31d2-45f5-900b-9d1a81ee7ecf",
+    "name": "Articles",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "16047115"
+  },
+  "item": [
+    {
+      "name": "Get Articles",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/articles?populate=*",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "articles"
+          ],
+          "query": [
+            {
+              "key": "populate",
+              "value": "*"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Articles by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/articles/:id?populate=*",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "articles",
+            ":id"
+          ],
+          "query": [
+            {
+              "key": "populate",
+              "value": "*"
+            }
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "3"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Articles (Only Campaign)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/articles?filters[category][$eq]=campaign&populate=*",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "articles"
+          ],
+          "query": [
+            {
+              "key": "filters[category][$eq]",
+              "value": "campaign"
+            },
+            {
+              "key": "populate",
+              "value": "*"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Articles (Only News)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/articles?filters[category][$eq]=news&populate=*",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "articles"
+          ],
+          "query": [
+            {
+              "key": "filters[category][$eq]",
+              "value": "news"
+            },
+            {
+              "key": "populate",
+              "value": "*"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Articles (Only Youtube)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/articles?filters[category][$eq]=youtube&populate=*",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "articles"
+          ],
+          "query": [
+            {
+              "key": "filters[category][$eq]",
+              "value": "youtube"
+            },
+            {
+              "key": "populate",
+              "value": "*"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

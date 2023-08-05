@@ -1,0 +1,11 @@
+# Exclude node_modules directory
+node_modules
+
+# Exclude npm debug logs
+npm-debug.log*
+
+# Exclude yarn debug logs
+yarn-debug.log*
+
+# Exclude yarn error logs
+yarn-error.log*

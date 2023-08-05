@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gambling_type_options",
+  "info": {
+    "singularName": "gambling-type-option",
+    "pluralName": "gambling-type-options",
+    "displayName": "ตัวเลือกประเภทพนัน"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    }
+  }
+}

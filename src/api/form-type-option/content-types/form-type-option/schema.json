@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_type_options",
+  "info": {
+    "singularName": "form-type-option",
+    "pluralName": "form-type-options",
+    "displayName": "ตัวเลือกประเภทฟอร์ม"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

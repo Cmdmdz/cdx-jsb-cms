@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "inviter_options",
+  "info": {
+    "singularName": "inviter-option",
+    "pluralName": "inviter-options",
+    "displayName": "ตัวเลือกผู้ชักชวน"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    }
+  }
+}

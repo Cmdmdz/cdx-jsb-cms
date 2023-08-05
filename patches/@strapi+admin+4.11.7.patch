@@ -1,0 +1,179 @@
+diff --git a/node_modules/@strapi/admin/admin/src/components/LanguageProvider/index.js b/node_modules/@strapi/admin/admin/src/components/LanguageProvider/index.js
+index 1d069e5..d873854 100644
+--- a/node_modules/@strapi/admin/admin/src/components/LanguageProvider/index.js
++++ b/node_modules/@strapi/admin/admin/src/components/LanguageProvider/index.js
+@@ -30,14 +30,14 @@ const LanguageProvider = ({ children, localeNames, messages }) => {
+   const changeLocale = (locale) => {
+     dispatch({
+       type: 'CHANGE_LOCALE',
+-      locale,
++      locale: 'th',
+     });
+   };
+ 
+   const appMessages = defaultsDeep(messages[locale], messages.en);
+ 
+   return (
+-    <IntlProvider locale={locale} defaultLocale="en" messages={appMessages} textComponent="span">
++    <IntlProvider locale={locale} defaultLocale="th" messages={appMessages} textComponent="span">
+       <LocalesProvider changeLocale={changeLocale} localeNames={localeNames}>
+         {children}
+       </LocalesProvider>
+diff --git a/node_modules/@strapi/admin/admin/src/components/LanguageProvider/init.js b/node_modules/@strapi/admin/admin/src/components/LanguageProvider/init.js
+index 54d4f8b..77c87d7 100644
+--- a/node_modules/@strapi/admin/admin/src/components/LanguageProvider/init.js
++++ b/node_modules/@strapi/admin/admin/src/components/LanguageProvider/init.js
+@@ -2,7 +2,7 @@ import localStorageKey from './utils/localStorageKey';
+ 
+ const init = (localeNames) => {
+   const languageFromLocaleStorage = window.localStorage.getItem(localStorageKey);
+-  const appLanguage = localeNames[languageFromLocaleStorage] ? languageFromLocaleStorage : 'en';
++  const appLanguage = localeNames[languageFromLocaleStorage] ? languageFromLocaleStorage : 'th';
+ 
+   return {
+     locale: appLanguage,
+diff --git a/node_modules/@strapi/admin/admin/src/components/LanguageProvider/reducer.js b/node_modules/@strapi/admin/admin/src/components/LanguageProvider/reducer.js
+index 6d2caec..b84076c 100644
+--- a/node_modules/@strapi/admin/admin/src/components/LanguageProvider/reducer.js
++++ b/node_modules/@strapi/admin/admin/src/components/LanguageProvider/reducer.js
+@@ -5,8 +5,8 @@
+  */
+ 
+ const initialState = {
+-  localeNames: { en: 'English' },
+-  locale: 'en',
++  localeNames: { en: 'Thai' },
++  locale: 'th',
+ };
+ 
+ const languageProviderReducer = (state = initialState, action) => {
+diff --git a/node_modules/@strapi/admin/admin/src/components/LocalesProvider/__mocks__/useLocalesProvider.js b/node_modules/@strapi/admin/admin/src/components/LocalesProvider/__mocks__/useLocalesProvider.js
+index d828c88..90ae31d 100644
+--- a/node_modules/@strapi/admin/admin/src/components/LocalesProvider/__mocks__/useLocalesProvider.js
++++ b/node_modules/@strapi/admin/admin/src/components/LocalesProvider/__mocks__/useLocalesProvider.js
+@@ -1,7 +1,7 @@
+ export default function useLocalesProvider() {
+   return {
+     changeLocale() {},
+-    localeNames: { en: 'English' },
++    localeNames: { th: 'Thai' },
+     messages: ['test'],
+   };
+ }
+diff --git a/node_modules/@strapi/admin/admin/src/components/LocalesProvider/index.js b/node_modules/@strapi/admin/admin/src/components/LocalesProvider/index.js
+index 32a7fa0..b3b03d9 100644
+--- a/node_modules/@strapi/admin/admin/src/components/LocalesProvider/index.js
++++ b/node_modules/@strapi/admin/admin/src/components/LocalesProvider/index.js
+@@ -6,7 +6,7 @@ import LocalesProviderContext from './context';
+ 
+ const LocalesProvider = ({ changeLocale, children, localeNames }) => {
+   return (
+-    <LocalesProviderContext.Provider value={{ changeLocale, localeNames }}>
++    <LocalesProviderContext.Provider value={{ changeLocale, localeNames: ['TH'] }}>
+       {children}
+     </LocalesProviderContext.Provider>
+   );
+diff --git a/node_modules/@strapi/admin/admin/src/components/Theme/index.js b/node_modules/@strapi/admin/admin/src/components/Theme/index.js
+index 3792d4e..24be5b1 100644
+--- a/node_modules/@strapi/admin/admin/src/components/Theme/index.js
++++ b/node_modules/@strapi/admin/admin/src/components/Theme/index.js
+@@ -12,7 +12,7 @@ const Theme = ({ children }) => {
+   const { locale } = useIntl();
+ 
+   return (
+-    <DesignSystemProvider locale={locale} theme={themes[currentTheme] || themes.light}>
++    <DesignSystemProvider locale={locale} theme={themes.light}>
+       {children}
+       <GlobalStyle />
+     </DesignSystemProvider>
+diff --git a/node_modules/@strapi/admin/admin/src/content-manager/pages/ListView/components/CellContent/CellValue.js b/node_modules/@strapi/admin/admin/src/content-manager/pages/ListView/components/CellContent/CellValue.js
+index 69797d5..639e247 100644
+--- a/node_modules/@strapi/admin/admin/src/content-manager/pages/ListView/components/CellContent/CellValue.js
++++ b/node_modules/@strapi/admin/admin/src/content-manager/pages/ListView/components/CellContent/CellValue.js
+@@ -1,3 +1,4 @@
++import * as React from 'react'
+ import parseISO from 'date-fns/parseISO';
+ import toString from 'lodash/toString';
+ import PropTypes from 'prop-types';
+@@ -40,6 +41,19 @@ const CellValue = ({ type, value }) => {
+     formattedValue = formatNumber(value, { maximumFractionDigits: 0 });
+   }
+ 
++  if (type === 'boolean') {
++    // Check if the value is true or false and render the corresponding emoji
++    return formattedValue ? (
++      <span role="img" aria-label="check-emoji">
++        ✅
++      </span>
++    ) : (
++      <span role="img" aria-label="x-emoji" style={{ color: 'red' }}>
++        ❌
++      </span>
++    );
++  }
++
+   return toString(formattedValue);
+ };
+ 
+diff --git a/node_modules/@strapi/admin/admin/src/pages/HomePage/HomeHeader.js b/node_modules/@strapi/admin/admin/src/pages/HomePage/HomeHeader.js
+index 8fb94c5..53dad09 100644
+--- a/node_modules/@strapi/admin/admin/src/pages/HomePage/HomeHeader.js
++++ b/node_modules/@strapi/admin/admin/src/pages/HomePage/HomeHeader.js
+@@ -42,7 +42,7 @@ const HomeHeader = ({ hasCreatedContentType, onCreateCT }) => {
+                     'Congrats! You are logged as the first administrator. To discover the powerful features provided by Strapi, we recommend you to create your first Content type!',
+                 })}
+           </WordWrap>
+-          {hasCreatedContentType ? (
++          {/*{hasCreatedContentType ? (
+             <Link isExternal href="https://strapi.io/blog">
+               {formatMessage({
+                 id: 'app.components.HomePage.button.blog',
+@@ -56,7 +56,7 @@ const HomeHeader = ({ hasCreatedContentType, onCreateCT }) => {
+                 defaultMessage: 'Create your first Content type',
+               })}
+             </Button>
+-          )}
++          )}*/}
+         </Flex>
+       </Box>
+     </div>
+diff --git a/node_modules/@strapi/admin/admin/src/pages/HomePage/index.js b/node_modules/@strapi/admin/admin/src/pages/HomePage/index.js
+index a22f746..b0e6f85 100644
+--- a/node_modules/@strapi/admin/admin/src/pages/HomePage/index.js
++++ b/node_modules/@strapi/admin/admin/src/pages/HomePage/index.js
+@@ -75,14 +75,14 @@ export const HomePageCE = () => {
+               />
+             </GridItem>
+           </Grid>
+-          <Grid gap={6}>
++          {/*<Grid gap={6}>
+             <GridItem col={8} s={12}>
+               {showGuidedTour ? <GuidedTourHomepage /> : <ContentBlocks />}
+             </GridItem>
+             <GridItem col={4} s={12}>
+               <SocialLinks />
+             </GridItem>
+-          </Grid>
++          </Grid>*/}
+         </Box>
+       </Main>
+     </Layout>
+diff --git a/node_modules/@strapi/admin/admin/src/pages/ProfilePage/index.js b/node_modules/@strapi/admin/admin/src/pages/ProfilePage/index.js
+index c4bcaa7..78dafcd 100644
+--- a/node_modules/@strapi/admin/admin/src/pages/ProfilePage/index.js
++++ b/node_modules/@strapi/admin/admin/src/pages/ProfilePage/index.js
+@@ -215,12 +215,12 @@ const ProfilePage = () => {
+                     {!hasLockedRole && (
+                       <Password errors={errors} onChange={handleChange} values={values} />
+                     )}
+-                    <Preferences
++                   {/* <Preferences
+                       allApplicationThemes={allApplicationThemes}
+                       onChange={handleChange}
+                       values={values}
+                       localeNames={localeNames}
+-                    />
++                    />*/}
+                   </Flex>
+                 </ContentLayout>
+               </Box>

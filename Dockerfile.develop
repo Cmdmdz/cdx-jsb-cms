@@ -1,0 +1,28 @@
+FROM node:18-alpine
+# Installing libvips-dev for sharp Compatibility
+RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /strapi
+COPY package.json yarn.lock ./
+RUN yarn config set network-timeout 600000 -g && yarn install
+RUN yarn add --platform=linuxmusl sharp
+ENV PATH /strapi/node_modules/.bin:$PATH
+
+# for plugin pdf-form-report
+WORKDIR /strapi/pdf-form-report
+COPY src/plugins/pdf-form-report/package.json src/plugins/pdf-form-report/yarn.lock ./
+RUN yarn config set network-timeout 600000 -g && yarn install
+ENV PATH /strapi/pdf-form-report/node_modules/.bin:$PATH
+
+WORKDIR /strapi/app/src/plugins/pdf-form-report
+RUN yarn build
+
+WORKDIR /strapi/app
+RUN chown -R node:node /strapi/app
+USER node
+
+EXPOSE 1337
+EXPOSE 8000
+CMD ["yarn", "develop"]
