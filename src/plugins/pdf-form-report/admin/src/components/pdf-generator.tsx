@@ -103,6 +103,9 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 14,
     marginBottom: 15,
+    wordBreak: 'break-all',
+    flexDirection: "row",
+    flexWrap: "wrap"
   },
   truncate: {
     overflow: "hidden",
@@ -193,105 +196,130 @@ const PDFGenerator = () => {
 
   if (slug !== "api::form.form") return null;
 
+  const maxImagesPerPage = 4;
+  const pages = Math.ceil((data.evidences?.length || 0) / maxImagesPerPage);
+
+  const WrapText = ({text}: {text?: string}) => (
+    <View style={styles.value}>
+      {text?.match(/\w+|\W+/g)?.map((seg, i) => (
+        <Text key={i}>{seg}</Text>
+      ))}
+    </View>
+  );
+
   return (
     <PDFDownloadLink
       document={
         <Document>
-          <Page size="A4" style={styles.page}>
-            <View style={styles.header}>
-              <Text style={styles.title}>
-                ข้อมูลการ
-                {data.type?.id === 1 ? "แจ้งเบาะแส" : "ร้องเรียนพนัน"}
-              </Text>
-            </View>
-            <View style={styles.infoGrid}>
-              <View
-                style={{
-                  ...styles.section,
-                  maxWidth: "70%",
-                }}
-              >
-                <Text style={styles.label}>URL เว็บไซต์ที่กระทำความผิด..</Text>
-                <Text
-                  style={{
-                    ...styles.value,
-                    ...styles.truncate,
-                  }}
-                  wrap
-                >
-                  {data.website_url}
-                </Text>
-                <Text style={styles.label}>มูลค่าความเสียหาย</Text>
-                <Text style={styles.value}>
-                  {Number(data.damage_value || 0).toLocaleString()} บาท
-                </Text>
-              </View>
-              <View style={styles.section}>
-                <Text style={styles.label}>สร้างเมื่อ</Text>
-                <Text style={styles.value}>
-                  {dayjs(data.createdAt).format("DD / MMM / YYYY เวลา HH:mm")}
-                </Text>
-                <Text style={styles.label}>อนุญาติให้ติดต่อกลับ</Text>
-                <Text style={{ ...styles.value, textDecoration: "underline" }}>
-                  {data.callback_agreement ? "อนุญาติ" : "ไม่อนุญาติ"}
-                </Text>
-                {data.contact && (
-                  <>
-                    <Text style={styles.label}>📞 โทร</Text>
-                    <Text style={styles.value}>{data.contact}</Text>
-                  </>
-                )}
-              </View>
-              <View style={{ ...styles.section, width: "100%" }}>
-                <Text style={styles.label} wrap>
-                  รายละเอียด
-                  {data.type?.id === 1 ? "เบาะแส" : "การร้องเรียนพนัน"}
-                </Text>
-                <Text style={styles.value}>{data.description}</Text>
-              </View>
-              <View style={{ ...styles.section, flex: 1 }}>
-                <Text style={styles.label}>ประเภทพนัน</Text>
-                <Text style={styles.value}>{data.gambling_type?.label}</Text>
-                {data.gambling_type_others && (
-                  <Text style={styles.value}>{data.gambling_type_others}</Text>
-                )}
-              </View>
-              <View style={{ ...styles.section, flex: 1 }}>
-                <Text style={styles.label}>ถูกชักชวนจาก</Text>
-                <Text style={styles.value}>{data.inviter?.label}</Text>
-                {data.inviter_others && (
-                  <Text style={styles.value}>{data.inviter_others}</Text>
-                )}
-              </View>
-              <View style={{ ...styles.section, flex: 1 }}>
-                <Text style={styles.label}>ช่องทางการชักชวน</Text>
-                <Text style={styles.value}>{data.tunnel?.label}</Text>
-                {data.tunnel_others && (
-                  <Text style={styles.value}>{data.tunnel_others}</Text>
-                )}
-              </View>
-            </View>
-            <View style={styles.section} wrap={false}>
-              <Text style={styles.title}>หลักฐาน</Text>
-              <View style={styles.evidenceContainer}>
-                {data.evidences?.map((evidence) => (
-                  <View key={evidence.id} style={styles.evidenceItem}>
-                    <Image src={evidence.url} style={styles.image} />
+          {Array.from({length: pages}).map((_, index) => (
+            <Page size="A4" style={styles.page} key={index}>
+              {index === 0 ? (
+                <>
+                  <View style={styles.header}>
+                    <Text style={styles.title} >
+                      ข้อมูลการ
+                      {data.type?.id === 1 ? "แจ้งเบาะแส" : "ร้องเรียนพนัน"}
+                    </Text>
                   </View>
-                ))}
+                  <View style={styles.infoGrid}>
+                    <View
+                      style={{
+                        ...styles.section,
+                        maxWidth: "70%",
+                      }}
+                    >
+                      <Text style={styles.label}>URL เว็บไซต์ที่กระทำความผิด..</Text>
+                      <Text
+                        style={{
+                          ...styles.value,
+                          ...styles.truncate,
+                        }}
+                        wrap
+                      >
+                        {data.website_url}
+                      </Text>
+                      <Text style={styles.label}>มูลค่าความเสียหาย</Text>
+                      <Text style={styles.value}>
+                        {Number(data.damage_value || 0).toLocaleString()} บาท
+                      </Text>
+                    </View>
+                    <View style={styles.section}>
+                      <Text style={styles.label}>สร้างเมื่อ</Text>
+                      <Text style={styles.value}>
+                        {dayjs(data.createdAt).format("DD / MMM / YYYY เวลา HH:mm")}
+                      </Text>
+                      <Text style={styles.label}>อนุญาติให้ติดต่อกลับ</Text>
+                      <Text style={{...styles.value, textDecoration: "underline"}}>
+                        {data.callback_agreement ? "อนุญาติ" : "ไม่อนุญาติ"}
+                      </Text>
+                      {data.contact && (
+                        <>
+                          <Text style={styles.label}>📞 โทร</Text>
+                          <Text style={styles.value}>{data.contact}</Text>
+                        </>
+                      )}
+                    </View>
+                    <View style={{...styles.section, width: "100%"}}>
+                      <Text style={styles.label} wrap>
+                        รายละเอียด
+                        {data.type?.id === 1 ? "เบาะแส" : "การร้องเรียนพนัน"}
+                      </Text>
+                      <WrapText text={data.description} />
+                    </View>
+
+
+                    <View style={{...styles.section,width: "100%"}}>
+                      <Text style={styles.label}>ประเภทพนัน</Text>
+                      <WrapText text={data.gambling_type?.label} />
+                      {data.gambling_type_others && (
+                        <WrapText text={data.gambling_type_others} />
+                      )}
+                    </View>
+                    <View style={{...styles.section,width: "100%"}}>
+                      <Text style={styles.label}>ถูกชักชวนจาก</Text>
+                      <Text style={styles.value}>{data.inviter?.label}</Text>
+                      {data.inviter_others && (
+                        <WrapText text={data.inviter_others} />
+                      )}
+                    </View>
+                    <View style={{...styles.section,width: "100%"}}>
+                      <Text style={styles.label}>ช่องทางการชักชวน</Text>
+                      <Text style={styles.value}>{data.tunnel?.label}</Text>
+                      {data.tunnel_others && (
+                        <WrapText text={data.tunnel_others} />
+                      )}
+                    </View>
+                  </View>
+                </>
+              ) : null}
+
+              <View style={styles.section} wrap={false}>
+                <Text style={styles.title}>หลักฐาน</Text>
+                <View style={styles.evidenceContainer}>
+                  {data.evidences
+                    ?.slice(
+                      index * maxImagesPerPage,
+                      (index + 1) * maxImagesPerPage
+                    )
+                    .map((evidence) => (
+                      <View key={evidence.id} style={styles.evidenceItem}>
+                        <Image src={evidence.url} style={styles.image} />
+                      </View>
+                    ))}
+                </View>
               </View>
-            </View>
-          </Page>
+            </Page>
+          ))}
         </Document>
       }
       fileName={fileName}
     >
-      {({ loading }) => (
+      {({loading}) => (
         <ButtonStyled
           loading={loading}
           // variant="tertiary"
           startIcon={
-            <BsFillFileEarmarkPdfFill style={{ width: 16, height: 16 }} />
+            <BsFillFileEarmarkPdfFill style={{width: 16, height: 16}}/>
           }
         >
           <div>ดาวน์โหลดไฟล์ PDF</div>
