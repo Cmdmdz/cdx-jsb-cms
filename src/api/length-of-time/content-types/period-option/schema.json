@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "period_options",
+  "info": {
+    "singularName": "period-option",
+    "pluralName": "period-options",
+    "displayName": "ระยะเวลาที่เล่นพนัน",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "period_name": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
