@@ -4,16 +4,15 @@
   "info": {
     "singularName": "period-option",
     "pluralName": "period-options",
-    "displayName": "ระยะเวลาที่เล่นพนัน",
+    "displayName": "period-option",
     "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "attributes": {
-    "period_name": {
-      "type": "string",
-      "required": true
+    "label": {
+      "type": "string"
     }
   }
 }
