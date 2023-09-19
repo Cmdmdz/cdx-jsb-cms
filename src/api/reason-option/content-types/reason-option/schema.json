@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reason_options",
+  "info": {
+    "singularName": "reason-option",
+    "pluralName": "reason-options",
+    "displayName": "เหตุผลที่เข้าไปเล่นการพนันออนไลน์",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    }
+  }
+}

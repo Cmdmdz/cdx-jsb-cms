@@ -125,6 +125,42 @@
         }
       },
       "type": "string"
+    },
+    "period": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::period-option.period-option",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "reason": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::reason-option.reason-option"
+    },
+    "reason_other": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "cause_other": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "cause": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cause-option.cause-option"
     }
   }
 }

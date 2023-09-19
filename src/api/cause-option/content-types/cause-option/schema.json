@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cause_options",
+  "info": {
+    "singularName": "cause-option",
+    "pluralName": "cause-options",
+    "displayName": "สาเหตุที่เลือกเว็บพนันเว็บไซต์นี้",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    }
+  }
+}

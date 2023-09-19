@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "@strapi/design-system";
+import React, {useEffect, useState} from "react";
+import {Button} from "@strapi/design-system";
 import styled from "styled-components";
-import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
+import {BsFillFileEarmarkPdfFill} from "react-icons/bs";
 import {
   Document,
   Image,
@@ -14,7 +14,7 @@ import {
   Svg,
   PDFDownloadLink,
 } from "@react-pdf/renderer";
-import { useCMEditViewDataManager } from "@strapi/helper-plugin";
+import {useCMEditViewDataManager} from "@strapi/helper-plugin";
 import * as dayjs from "dayjs";
 import "dayjs/locale/th";
 
@@ -56,10 +56,12 @@ const ButtonStyled = styled(Button)`
   display: flex;
   justify-items: center;
   height: 40px;
+
   span {
     display: flex;
     gap: 10px;
     align-items: center;
+
     svg {
       width: 14px;
       height: auto;
@@ -102,10 +104,10 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 14,
-    marginBottom: 15,
+    marginBottom: 10,
     wordBreak: 'break-all',
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   truncate: {
     overflow: "hidden",
@@ -150,11 +152,16 @@ interface Data {
   website_url: string;
   damage_value: number;
   description: string;
+  period: [{ label: string; id: number }];
+  reason: [{ label: string; id: number }];
+  cause: [{ label: string; id: number }];
+  cause_other: string
+  reason_other: string
   evidences: Record<string, any>[];
 }
 
 const PDFGenerator = () => {
-  const { slug, initialData } = useCMEditViewDataManager();
+  const {slug, initialData} = useCMEditViewDataManager();
   // console.log({ slug, initialData, allLayoutData });
 
   const {
@@ -172,7 +179,13 @@ const PDFGenerator = () => {
     gambling_type,
     tunnel,
     inviter,
+    period,
     createdAt,
+    reason,
+    cause,
+    cause_other,
+    reason_other,
+
   } = (initialData || {}) as Partial<Data>;
 
   const data = {
@@ -189,6 +202,11 @@ const PDFGenerator = () => {
     gambling_type_others,
     inviter_others,
     tunnel_others,
+    cause_other,
+    reason_other,
+    period: period?.[0],
+    reason: reason?.[0],
+    cause: cause?.[0],
     createdAt,
   };
 
@@ -199,7 +217,7 @@ const PDFGenerator = () => {
   const maxImagesPerPage = 4;
   const pages = Math.ceil((data.evidences?.length || 0) / maxImagesPerPage);
 
-  const WrapText = ({text}: {text?: string}) => (
+  const WrapText = ({text}: { text?: string }) => (
     <View style={styles.value}>
       {text?.match(/\w+|\W+/g)?.map((seg, i) => (
         <Text key={i}>{seg}</Text>
@@ -216,7 +234,7 @@ const PDFGenerator = () => {
               {index === 0 ? (
                 <>
                   <View style={styles.header}>
-                    <Text style={styles.title} >
+                    <Text style={styles.title}>
                       ข้อมูลการ
                       {data.type?.id === 1 ? "แจ้งเบาะแส" : "ร้องเรียนพนัน"}
                     </Text>
@@ -238,13 +256,18 @@ const PDFGenerator = () => {
                       >
                         {data.website_url}
                       </Text>
-                      <Text style={styles.label}>มูลค่าความเสียหาย</Text>
-                      <Text style={styles.value}>
-                        {Number(data.damage_value || 0).toLocaleString()} บาท
-                      </Text>
+                      {data.damage_value && data.damage_value > 0 ? <>
+                        <Text style={styles.label}>มูลค่าความเสียหาย</Text>
+                        <Text style={styles.value}>
+                          {Number(data.damage_value || 0).toLocaleString()} บาท
+                        </Text>
+                      </> : null}
                     </View>
                     <View style={styles.section}>
-                      <Text style={styles.label}>สร้างเมื่อ</Text>
+                      <Text style={styles.label}>
+                        {data.type?.id === 1 ? "เบาะแส" : "ร้องเรียนพนัน"}
+                        เมื่อ
+                      </Text>
                       <Text style={styles.value}>
                         {dayjs(data.createdAt).format("DD / MMM / YYYY เวลา HH:mm")}
                       </Text>
@@ -259,36 +282,70 @@ const PDFGenerator = () => {
                         </>
                       )}
                     </View>
+
+                    {data.type?.id === 1 ? <></> :
+                      <>
+                        <View style={{...styles.section, width: "100%"}}>
+                          <Text style={styles.label} wrap>
+                            ระยะเวลาที่เล่นพนัน
+                          </Text>
+                          <WrapText text={data.period?.label}/>
+                        </View>
+                      </>
+                    }
+
                     <View style={{...styles.section, width: "100%"}}>
                       <Text style={styles.label} wrap>
                         รายละเอียด
                         {data.type?.id === 1 ? "เบาะแส" : "การร้องเรียนพนัน"}
                       </Text>
-                      <WrapText text={data.description} />
+                      <WrapText text={data.description}/>
                     </View>
 
 
-                    <View style={{...styles.section,width: "100%"}}>
+                    <View style={{...styles.section, width: "100%"}}>
                       <Text style={styles.label}>ประเภทพนัน</Text>
-                      <WrapText text={data.gambling_type?.label} />
+                      <WrapText text={data.gambling_type?.label}/>
                       {data.gambling_type_others && (
-                        <WrapText text={data.gambling_type_others} />
+                        <WrapText text={data.gambling_type_others}/>
                       )}
                     </View>
-                    <View style={{...styles.section,width: "100%"}}>
+                    <View style={{...styles.section, width: "100%"}}>
                       <Text style={styles.label}>ถูกชักชวนจาก</Text>
                       <Text style={styles.value}>{data.inviter?.label}</Text>
                       {data.inviter_others && (
-                        <WrapText text={data.inviter_others} />
+                        <WrapText text={data.inviter_others}/>
                       )}
                     </View>
-                    <View style={{...styles.section,width: "100%"}}>
+                    <View style={{...styles.section, width: "100%"}}>
                       <Text style={styles.label}>ช่องทางการชักชวน</Text>
                       <Text style={styles.value}>{data.tunnel?.label}</Text>
                       {data.tunnel_others && (
-                        <WrapText text={data.tunnel_others} />
+                        <WrapText text={data.tunnel_others}/>
                       )}
                     </View>
+
+                    {data.type?.id === 1 ? <></> :
+                      <>
+                        <View style={{...styles.section, width: "100%"}}>
+                          <Text style={styles.label}>เหตุผลที่เข้าไปเล่นการพนันออนไลน์</Text>
+                          {data.reason_other ? (
+                            <WrapText text={data.reason_other}/>
+                          ) : <>
+                            <WrapText text={data.reason?.label}/>
+                          </>}
+                        </View>
+
+                        <View style={{...styles.section, width: "100%"}}>
+                          <Text style={styles.label}>สาเหตุที่เลือกเว็บพนันเว็บไซต์นี้</Text>
+                          {data.cause_other ? (
+                            <WrapText text={data.cause_other}/>
+                          ) : (
+                            <WrapText text={data.cause?.label}/>
+                          )}
+                        </View>
+                      </>
+                    }
                   </View>
                 </>
               ) : null}
@@ -303,7 +360,7 @@ const PDFGenerator = () => {
                     )
                     .map((evidence) => (
                       <View key={evidence.id} style={styles.evidenceItem}>
-                        <Image src={evidence.url} style={styles.image} />
+                        <Image src={evidence.url} style={styles.image}/>
                       </View>
                     ))}
                 </View>
