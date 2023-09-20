@@ -302,26 +302,28 @@ const PDFGenerator = () => {
                       <WrapText text={data.description}/>
                     </View>
 
-
                     <View style={{...styles.section, width: "100%"}}>
                       <Text style={styles.label}>ประเภทพนัน</Text>
-                      <WrapText text={data.gambling_type?.label}/>
-                      {data.gambling_type_others && (
+                      {data.gambling_type_others ? (
                         <WrapText text={data.gambling_type_others}/>
+                      ): (
+                        <WrapText text={data.gambling_type?.label}/>
                       )}
                     </View>
                     <View style={{...styles.section, width: "100%"}}>
                       <Text style={styles.label}>ถูกชักชวนจาก</Text>
-                      <Text style={styles.value}>{data.inviter?.label}</Text>
-                      {data.inviter_others && (
+                      {data.inviter_others ? (
                         <WrapText text={data.inviter_others}/>
+                      ) : (
+                        <Text style={styles.value}>{data.inviter?.label}</Text>
                       )}
                     </View>
                     <View style={{...styles.section, width: "100%"}}>
                       <Text style={styles.label}>ช่องทางการชักชวน</Text>
-                      <Text style={styles.value}>{data.tunnel?.label}</Text>
-                      {data.tunnel_others && (
+                      {data.tunnel_others ? (
                         <WrapText text={data.tunnel_others}/>
+                      ) : (
+                        <Text style={styles.value}>{data.tunnel?.label}</Text>
                       )}
                     </View>
 
